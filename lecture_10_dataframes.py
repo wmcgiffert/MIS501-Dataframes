@@ -19,7 +19,92 @@ def _():
     from datetime import date
     from pathlib import Path
 
-    here = Path(__file__).parent
+    # A molab GitHub mirror copies this notebook and not the CSV files.
+    # If a file is already here, leave it. If it is missing, write the sample.
+    _sample_files = {
+        "menu.csv": """item,price,category
+latte,4.50,drink
+muffin,3.00,food
+drip coffee,2.25,drink
+bagel,2.50,food
+cappuccino,3.75,drink
+cold brew,4.25,drink
+""",
+        "sales.csv": """date,item,quantity,employee
+2026-03-02,latte,4,ava
+2026-03-02,muffin,2,ava
+2026-03-02,drip coffee,8,ben
+2026-03-02,bagel,3,ben
+2026-03-02,cappuccino,2,cam
+2026-03-02,cold brew,2,cam
+2026-03-03,latte,6,ava
+2026-03-03,cappuccino,2,ava
+2026-03-03,drip coffee,4,ben
+2026-03-03,muffin,3,ben
+2026-03-03,bagel,2,ben
+2026-03-04,latte,3,ava
+2026-03-04,cold brew,4,ava
+2026-03-04,drip coffee,6,ben
+2026-03-04,bagel,4,ben
+2026-03-04,muffin,2,cam
+2026-03-04,cappuccino,2,cam
+2026-03-05,latte,5,ava
+2026-03-05,muffin,4,ava
+2026-03-05,drip coffee,4,ben
+2026-03-05,cold brew,3,ben
+2026-03-05,cappuccino,3,ben
+2026-03-06,latte,2,ava
+2026-03-06,bagel,2,ava
+2026-03-06,drip coffee,8,ben
+2026-03-06,muffin,2,ben
+2026-03-06,cold brew,3,cam
+2026-03-06,cappuccino,1,cam
+""",
+        "hours.csv": """employee,date,hours
+ava,2026-03-02,6.0
+ava,2026-03-03,6.0
+ava,2026-03-04,5.5
+ava,2026-03-05,6.0
+ava,2026-03-06,4.0
+ben,2026-03-02,5.0
+ben,2026-03-03,5.0
+ben,2026-03-04,6.0
+ben,2026-03-05,5.5
+ben,2026-03-06,5.0
+cam,2026-03-02,4.0
+cam,2026-03-04,4.0
+cam,2026-03-06,5.0
+""",
+    }
+
+    def _ensure_csvs():
+        folders = []
+        try:
+            folders.append(Path(__file__).resolve().parent)
+        except NameError:
+            pass
+        try:
+            folders.append(Path(mo.notebook_location()))
+        except Exception:
+            pass
+        cwd = Path.cwd()
+        if cwd not in folders:
+            folders.append(cwd)
+        for folder in folders:
+            if all((folder / name).exists() for name in _sample_files):
+                return folder
+        for folder in folders:
+            try:
+                for name, text in _sample_files.items():
+                    path = folder / name
+                    if not path.exists():
+                        path.write_text(text)
+                return folder
+            except OSError:
+                continue
+        raise RuntimeError("Could not find or create the CSV files")
+
+    here = _ensure_csvs()
     return date, here, mo, pl
 
 

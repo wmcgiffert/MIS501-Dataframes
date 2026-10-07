@@ -10,6 +10,8 @@ Give students this repo only. The solution lives in a separate private repo so i
 
 ## Mirror in molab
 
+Molab copies the notebook only, not `menu.csv`, `sales.csv`, or `hours.csv`. The first cell writes those sample files if they are not already next to the notebook.
+
 Paste this GitHub URL into molab’s new-notebook dropdown:
 
 `https://github.com/wmcgiffert/MIS501-Dataframes/blob/main/lecture_10_dataframes.py`
