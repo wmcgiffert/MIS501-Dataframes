@@ -1,0 +1,29 @@
+date,item,quantity,employee
+2026-03-02,latte,4,ava
+2026-03-02,muffin,2,ava
+2026-03-02,drip coffee,8,ben
+2026-03-02,bagel,3,ben
+2026-03-02,cappuccino,2,cam
+2026-03-02,cold brew,2,cam
+2026-03-03,latte,6,ava
+2026-03-03,cappuccino,2,ava
+2026-03-03,drip coffee,4,ben
+2026-03-03,muffin,3,ben
+2026-03-03,bagel,2,ben
+2026-03-04,latte,3,ava
+2026-03-04,cold brew,4,ava
+2026-03-04,drip coffee,6,ben
+2026-03-04,bagel,4,ben
+2026-03-04,muffin,2,cam
+2026-03-04,cappuccino,2,cam
+2026-03-05,latte,5,ava
+2026-03-05,muffin,4,ava
+2026-03-05,drip coffee,4,ben
+2026-03-05,cold brew,3,ben
+2026-03-05,cappuccino,3,ben
+2026-03-06,latte,2,ava
+2026-03-06,bagel,2,ava
+2026-03-06,drip coffee,8,ben
+2026-03-06,muffin,2,ben
+2026-03-06,cold brew,3,cam
+2026-03-06,cappuccino,1,cam
