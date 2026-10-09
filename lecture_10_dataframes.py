@@ -43,6 +43,10 @@ def _(mo):
     The demo cell, the order helpers, and `append_sales` are already written.
     Fill in the report functions. Do not change the run cell at the bottom.
 
+    Each function has a **test cell** under it. Run that cell. It prints what
+    your function returned. An empty table, or the wrong columns, means the
+    function still needs work. Fix it and run the test cell again.
+
     **View menu**
 
     1. `drinks_only(menu)` — keep rows where `category` is `"drink"` (`filter`)
@@ -131,10 +135,26 @@ def drinks_only(menu):
     return menu.head(0)
 
 
+@app.cell
+def _(here, pl):
+    # Test 1. You want four rows, and every category should be drink.
+    _menu = pl.read_csv(here / "menu.csv")
+    print(drinks_only(_menu))
+    return
+
+
 @app.function
 # Task 2 — add price_with_tax, rounded to 2 decimals. Keep the other columns.
 def with_tax(menu, rate):
     return menu.head(0)
+
+
+@app.cell
+def _(here, pl):
+    # Test 2. A latte is 4.50 * 1.04, so price_with_tax should be 4.68.
+    _menu = pl.read_csv(here / "menu.csv")
+    print(with_tax(_menu, 0.04))
+    return
 
 
 @app.function
@@ -143,16 +163,41 @@ def quantity_by_item(sales):
     return pl.DataFrame({"item": [], "quantity": []})
 
 
+@app.cell
+def _(here, pl):
+    # Test 3. One row per item. The biggest quantity should be on top.
+    _sales = pl.read_csv(here / "sales.csv")
+    print(quantity_by_item(_sales))
+    return
+
+
 @app.function
 # Task 4 — join menu on item, then one row per date with total revenue
 def revenue_by_day(sales, menu):
     return pl.DataFrame({"date": [], "revenue": []})
 
 
+@app.cell
+def _(here, pl):
+    # Test 4. One row per date, with a revenue column. Dates should run in order.
+    _menu = pl.read_csv(here / "menu.csv")
+    _sales = pl.read_csv(here / "sales.csv")
+    print(revenue_by_day(_sales, _menu))
+    return
+
+
 @app.function
 # Task 5 — one row per employee; hours is the sum; highest hours first
 def hours_by_employee(hours):
     return pl.DataFrame({"employee": [], "hours": []})
+
+
+@app.cell
+def _(here, pl):
+    # Test 5. One row per employee. The most hours should be on top.
+    _hours = pl.read_csv(here / "hours.csv")
+    print(hours_by_employee(_hours))
+    return
 
 
 @app.function
@@ -168,10 +213,27 @@ def revenue_per_hour(sales, menu, hours):
     )
 
 
+@app.cell
+def _(here, pl):
+    # Test 6. One row per employee: revenue, hours, and revenue_per_hour.
+    _menu = pl.read_csv(here / "menu.csv")
+    _sales = pl.read_csv(here / "sales.csv")
+    _hours = pl.read_csv(here / "hours.csv")
+    print(revenue_per_hour(_sales, _menu, _hours))
+    return
+
+
 @app.function
 # last week — strip spaces and lowercase so " Latte " matches "latte"
 def clean_item(item):
     return item.strip().lower()
+
+
+@app.cell
+def _():
+    # Test. " Latte " should come back as latte.
+    print(clean_item(" Latte "))
+    return
 
 
 @app.function
@@ -181,6 +243,14 @@ def is_on_menu(menu, item):
         return True
     else:
         return False
+
+
+@app.cell
+def _():
+    # Test. latte is on this menu. pizza is not.
+    print(is_on_menu({"latte": 4.50}, "latte"))
+    print(is_on_menu({"latte": 4.50}, "pizza"))
+    return
 
 
 @app.function
@@ -196,8 +266,18 @@ def parse_quantity(text):
         return None
 
 
+@app.cell
+def _():
+    # Test. "2" is 2. Zero and letters are not a quantity.
+    print(parse_quantity("2"))
+    print(parse_quantity("0"))
+    print(parse_quantity("abc"))
+    return
+
+
 @app.function
 # last week — keep asking until END; skip unknown items and bad quantities
+# Test this from the menu at the bottom. It waits for you to type.
 def take_order(menu):
     order = []
     item = input("Please enter your order or type END to end your order: ")
@@ -225,8 +305,21 @@ def calculate_total(menu, order):
     return total
 
 
+@app.cell
+def _():
+    # Test. Two lattes and one muffin: 4.50 * 2 + 3.00 = 12.0
+    print(
+        calculate_total(
+            {"latte": 4.50, "muffin": 3.00},
+            [("latte", 2), ("muffin", 1)],
+        )
+    )
+    return
+
+
 @app.function
 # already written — add this order's rows onto the end of sales.csv
+# Test this from the menu at the bottom. Choice 1 writes the rows.
 def append_sales(path, order, employee, sold_on):
     new_rows = pl.DataFrame(
         {
